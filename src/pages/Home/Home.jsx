@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import "./Home.css";
 import { bringProducts } from '../../services/apiCalls';
+import { ProductCard } from '../../common/ProductCard/ProductCard';
  
 export const Home = () => {
 
@@ -17,7 +18,7 @@ export const Home = () => {
             bringProducts()
                 .then(
                     resultados => {
-                        setProducts(resultados.data)
+                        setProducts(resultados.data.results)
                     }
                 )
                 .catch(error => console.log(error));
@@ -30,13 +31,19 @@ export const Home = () => {
             {
                 products.length > 0 
                     ? (
-                        <div>
+                        <div className="carlosManda">
                             {
                                 products.slice(0,20).map(
                                     product => {
                                         return (
                                             <div key={product.id}>
-                                                {product.name}
+                                                <ProductCard
+                                                    id={product.id}
+                                                    name={product.name}
+                                                    image={product.image}
+                                                    brand={product.species}
+                                                />
+
                                             </div>
                                         )
                                     }
