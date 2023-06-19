@@ -2,12 +2,18 @@
 import React, {useState} from 'react';
 import "./Login.css";
 import { InputText } from '../../common/InputText/InputText';
+import { checkError } from '../../services/useful';
  
 export const Login = () => {
 
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
+    })
+
+    const [credentialsError, setCredentialsError] = useState({
+        emailError: "",
+        passwordError: ""
     })
 
      const inputHandler = (e) => {
@@ -25,12 +31,15 @@ export const Login = () => {
 
      const inputCheck = (e) => {
 
-        console.log(e.target.value, "soy el check....");
-        console.log(e.target.name, "soy el check....");
+        let mensajeError = checkError(e.target.name, e.target.value);
+
+        setCredentialsError((prevState)=>({
+            ...prevState,
+            [e.target.name + 'Error'] : mensajeError
+        }));
+
 
      }
-
-
 
 
      return (
@@ -41,21 +50,23 @@ export const Login = () => {
             <InputText 
                 // type, design, placeholder, name, functionHandler, onBlurFunction
                 type={"email"}
-                design={"normalInput"}
+                design={credentialsError.emailError === "" ? "normalInput" : "normalInput errorInput"}
                 placeholder={"Email...."}
                 name={"email"}
                 functionHandler={inputHandler}
                 onBlurFunction={inputCheck}
             />
+            <div className='errorText'>{credentialsError.emailError}</div>
             <InputText 
                 // type, design, placeholder, name, functionHandler, onBlurFunction
                 type={"password"}
-                design={"normalInput"}
+                design={credentialsError.passwordError === "" ? "normalInput" : "normalInput errorInput"}
                 placeholder={"Password...."}
                 name={"password"}
                 functionHandler={inputHandler}
                 onBlurFunction={inputCheck}
             />
+            <div className='errorText'>{credentialsError.passwordError}</div>
          </div>
      )
 }
