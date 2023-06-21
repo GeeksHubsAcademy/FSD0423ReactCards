@@ -15,3 +15,9 @@ export const loginMe = async (credentials) => {
 
 
 }
+
+
+export const searchCharacter = async (criteria) => {
+
+    return await axios.get(`https://rickandmortyapi.com/api/character/?name=${criteria}`);
+}
